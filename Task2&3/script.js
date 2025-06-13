@@ -1,17 +1,19 @@
-const APIkey = 'd065503e4b354cee8fa6295a6ed3c720'
-const APIurl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${APIkey}`
+const APIurl = 'https://hn.algolia.com/api/v1/search_by_date?tags=story'
 const contactForm = document.querySelector('form');
 document.addEventListener("DOMContentLoaded", function () {
-  const el = document.querySelector("#waitlist-button");
+  const el = document.querySelector(".waitlist-button-js");
+  if(el){
   el.addEventListener("click", () => {
     window.location.href = "waitlist.html";
   });
-  const el2 = document.querySelector('.contact-us-button')
-  el2.addEventListener("click",()=>{
+  }
+  
+  const e2= document.querySelector('.contact-us-button')
+  if(e2){
+    e2.addEventListener("click",()=>{
     window.location.href = 'contact.html'
   })
-});
-
+}})
 if (contactForm && window.location.href.includes("contact")) {
   contactForm.onsubmit = function (e) {
     e.preventDefault()
@@ -55,16 +57,21 @@ if (news) {
     .then(res => res.json())
     .then(data => {
       news.innerHTML = "";
-      for (let i = 0; i < data.articles.length; i++) {
-        const a = data.articles[i];
+      for (let i = 0; i < data.hits.length; i++) {
+        const a = data.hits[i];
+        const ReadStoryText = "Click on the title to read the full story on the original site.";
         const div = document.createElement("div");
         div.className = "news-card";
-        div.innerHTML = "<h3><a href='" + a.url + "'>" + a.title + "</a></h3><p>" + a.description + "</p>";
+        
+        div.innerHTML = `
+          <h3><a href="${a.url}" target="_blank">${a.title}</a></h3>
+          <p>${ReadStoryText}<br>${a.points} points <br> by ${a.author[0].toUpperCase() + a.author.slice(1)}</p>
+        `;
+
         news.appendChild(div);
       }
-     
     })
     .catch(error => {
-      news.innerHTML = "Error loading news , Error faced is :" + error;
+      news.innerHTML = "Error loading news. Error: " + error;
     });
 }
