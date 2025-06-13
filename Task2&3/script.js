@@ -1,7 +1,7 @@
 const APIurl = 'https://hn.algolia.com/api/v1/search_by_date?tags=story'
 const contactForm = document.querySelector('form');
 document.addEventListener("DOMContentLoaded", function () {
-  const el = document.querySelector(".waitlist-button-js");
+  const el = document.querySelector("#waitlist-button");
   if(el){
   el.addEventListener("click", () => {
     window.location.href = "waitlist.html";
